@@ -17,6 +17,6 @@ class knapsack {
     double dumb();
 
     double relative();
-};//test
+};//test 1
 
 #endif
