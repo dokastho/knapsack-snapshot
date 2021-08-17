@@ -6,7 +6,7 @@
 
 using namespace std;
 
-vector<size_t> mergesort(vector<size_t> items) {
+vector<pair<double,pair<size_t,size_t>>> mergesort(vector<pair<double,pair<size_t,size_t>>> items, bool ratioBased) {
     if (items.size() == 1)
     {
         if (items.back() < items.front())
@@ -18,19 +18,37 @@ vector<size_t> mergesort(vector<size_t> items) {
 
     size_t middle = items.size() / 2;
 
-    vector<size_t>::iterator middleIter(items.begin());
+    vector<pair<double,pair<size_t,size_t>>>::iterator middleIter(items.begin());
     advance(middleIter, middle);
 
-    vector<size_t> first(items.begin(),middleIter);
-    vector<size_t> second(middleIter,items.end());
+    vector<pair<double,pair<size_t,size_t>>> first(items.begin(),middleIter);
+    vector<pair<double,pair<size_t,size_t>>> second(middleIter,items.end());
 
-    vector<size_t>::iterator fiter = first.begin();
-    vector<size_t>::iterator siter = second.begin();
+    vector<pair<double,pair<size_t,size_t>>>::iterator fiter = first.begin();
+    vector<pair<double,pair<size_t,size_t>>>::iterator siter = second.begin();
     items.clear();
+
+    if (ratioBased)
+    {
+        while (fiter != first.end() && (siter != second.end()))
+        {
+            if (fiter->first < siter->first)
+            {
+                items.push_back(*fiter);
+                fiter++;
+            }
+            else {
+                items.push_back(*siter);
+                siter++;
+            }
+        }
+        return items;
+    }
+    
 
     while (fiter != first.end() && (siter != second.end()))
     {
-        if (*fiter < *siter)
+        if (fiter->second.first < siter->second.first)
         {
             items.push_back(*fiter);
             fiter++;
@@ -44,16 +62,24 @@ vector<size_t> mergesort(vector<size_t> items) {
 }
 
 class knapsack {
-    double cap;
-    vector<size_t> items;
+    size_t cap;
+    size_t current;
+    size_t val;
+    vector<pair<double,pair<size_t,size_t>>> items;
     
     public:
 
-    knapsack(double cap_in, vector<size_t> items_in) : cap(cap_in), items(items_in) {};
+    knapsack(size_t cap_in, vector<pair<size_t,size_t>> items_in) : 
+                    cap(cap_in), current(0), val(0) {
+                        for (size_t i = 0; i < items_in.size(); i++)
+                        {
+                            items[i].first = items_in[i].second / items_in[i].first;
+                        }
+                        
+                    };
 
-    double dumb();
 
-    double relative();
+    double get_soln(bool dumb);
 };
 
 #endif
