@@ -3,5 +3,5 @@ make clean
 make fullsubmit
 sudo git add .
 sudo git commit
-sudo git push --force -u origin HEAD:main
+sudo git push origin main
 echo done!
