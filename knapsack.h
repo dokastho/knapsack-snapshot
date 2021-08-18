@@ -66,14 +66,14 @@ class knapsack {
     size_t current;
     size_t val;
     vector<pair<double,pair<size_t,size_t>>> items;
-    
     public:
 
     knapsack(size_t cap_in, vector<pair<size_t,size_t>> items_in) : 
                     cap(cap_in), current(0), val(0) {
                         for (size_t i = 0; i < items_in.size(); i++)
                         {
-                            items[i].first = items_in[i].second / items_in[i].first;
+                            items.push_back({(double)items_in[i].second / (double)items_in[i].first,
+                                                {items_in[i].first, items_in[i].second}});
                         }
                         
                     };
@@ -81,5 +81,15 @@ class knapsack {
 
     double get_soln(bool dumb);
 };
+
+knapsack generate_knapsack(size_t size) {
+    vector<pair<size_t,size_t>> bag;
+    for (size_t i = 0; i < size; i++)
+    {
+        bag.push_back({rand() % 16, rand() % 32});
+    }
+    knapsack k(128,bag);
+    return k;
+}
 
 #endif
