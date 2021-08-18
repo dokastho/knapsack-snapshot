@@ -6,7 +6,7 @@
 
 using namespace std;
 
-vector<pair<double,pair<size_t,size_t>>> mergesort(vector<pair<double,pair<size_t,size_t>>> &items) {
+void mergesort(vector<pair<double,pair<size_t,size_t>>> &items) {
     
     if (items.size() == 2)
     {
@@ -14,7 +14,7 @@ vector<pair<double,pair<size_t,size_t>>> mergesort(vector<pair<double,pair<size_
         {
             swap(items.front(), items.back());
         }
-        return items;
+        return;
     }
 
     size_t middle = items.size() / 2;
@@ -25,8 +25,8 @@ vector<pair<double,pair<size_t,size_t>>> mergesort(vector<pair<double,pair<size_
     vector<pair<double,pair<size_t,size_t>>> first(items.begin(),middleIter);
     vector<pair<double,pair<size_t,size_t>>> second(middleIter,items.end());
 
-    first = mergesort(first);
-    second = mergesort(second);
+    mergesort(first);
+    mergesort(second);
 
     vector<pair<double,pair<size_t,size_t>>>::iterator fiter = first.begin();
     vector<pair<double,pair<size_t,size_t>>>::iterator siter = second.begin();
@@ -54,17 +54,17 @@ vector<pair<double,pair<size_t,size_t>>> mergesort(vector<pair<double,pair<size_
         items.push_back(*siter);
         siter++;
     }
-    return items;
+    return;
 }
-vector<pair<double,pair<size_t,size_t>>> mergesort_ratio(vector<pair<double,pair<size_t,size_t>>> &items) {
+void mergesort_ratio(vector<pair<double,pair<size_t,size_t>>> &items) {
     
     if (items.size() == 2)
     {
-        if (items.back().first < items.front().first)
+        if (items.back().first > items.front().first)
         {
             swap(items.front(), items.back());
         }
-        return items;
+        return;
     }
 
     size_t middle = items.size() / 2;
@@ -75,8 +75,8 @@ vector<pair<double,pair<size_t,size_t>>> mergesort_ratio(vector<pair<double,pair
     vector<pair<double,pair<size_t,size_t>>> first(items.begin(),middleIter);
     vector<pair<double,pair<size_t,size_t>>> second(middleIter,items.end());
 
-    first = mergesort(first);
-    second = mergesort(second);
+    mergesort_ratio(first);
+    mergesort_ratio(second);
 
     vector<pair<double,pair<size_t,size_t>>>::iterator fiter = first.begin();
     vector<pair<double,pair<size_t,size_t>>>::iterator siter = second.begin();
@@ -84,7 +84,7 @@ vector<pair<double,pair<size_t,size_t>>> mergesort_ratio(vector<pair<double,pair
     
     while ((fiter != first.end()) & (siter != second.end()))
     {
-        if (fiter->first < siter->first)
+        if (fiter->first > siter->first)
         {
             items.push_back(*fiter);
             fiter++;
@@ -104,7 +104,7 @@ vector<pair<double,pair<size_t,size_t>>> mergesort_ratio(vector<pair<double,pair
         items.push_back(*siter);
         siter++;
     }
-    return items;
+    return;
 }
 
 

@@ -27,9 +27,11 @@ int main() {
 }
 
 double knapsack::greedy() {
-    items = mergesort(items);
+    mergesort(items);
+    current = 0;
+    val = 0;
     size_t head = 0;
-    while ((current < cap) && (head < items.size()))
+    while ((current < cap) & (head < items.size()))
     {
         val += items[head].second.second;
         current += items[head].second.first;
@@ -39,9 +41,11 @@ double knapsack::greedy() {
 }
 
 double knapsack::ratio() {
-    items = mergesort_ratio(items);
+    mergesort_ratio(items);
+    current = 0;
+    val = 0;
     size_t head = 0;
-    while ((current < cap) && (head < items.size()))
+    while ((current < cap) & (head < items.size()))
     {
         val += items[head].second.second;
         current += items[head].second.first;
