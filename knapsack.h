@@ -6,10 +6,11 @@
 
 using namespace std;
 
-vector<pair<double,pair<size_t,size_t>>> mergesort(vector<pair<double,pair<size_t,size_t>>> items, bool ratioBased) {
-    if (items.size() == 1)
+vector<pair<double,pair<size_t,size_t>>> mergesort(vector<pair<double,pair<size_t,size_t>>> &items) {
+    
+    if (items.size() == 2)
     {
-        if (items.back() < items.front())
+        if (items.back().second.first < items.front().second.first)
         {
             swap(items.front(), items.back());
         }
@@ -24,29 +25,14 @@ vector<pair<double,pair<size_t,size_t>>> mergesort(vector<pair<double,pair<size_
     vector<pair<double,pair<size_t,size_t>>> first(items.begin(),middleIter);
     vector<pair<double,pair<size_t,size_t>>> second(middleIter,items.end());
 
+    first = mergesort(first);
+    second = mergesort(second);
+
     vector<pair<double,pair<size_t,size_t>>>::iterator fiter = first.begin();
     vector<pair<double,pair<size_t,size_t>>>::iterator siter = second.begin();
     items.clear();
 
-    if (ratioBased)
-    {
-        while (fiter != first.end() && (siter != second.end()))
-        {
-            if (fiter->first < siter->first)
-            {
-                items.push_back(*fiter);
-                fiter++;
-            }
-            else {
-                items.push_back(*siter);
-                siter++;
-            }
-        }
-        return items;
-    }
-    
-
-    while (fiter != first.end() && (siter != second.end()))
+    while ((fiter != first.end()) & (siter != second.end()))
     {
         if (fiter->second.first < siter->second.first)
         {
@@ -58,8 +44,69 @@ vector<pair<double,pair<size_t,size_t>>> mergesort(vector<pair<double,pair<size_
             siter++;
         }
     }
+    while (fiter != first.end())
+    {
+        items.push_back(*fiter);
+        fiter++;
+    }
+    while (siter != second.end())
+    {
+        items.push_back(*siter);
+        siter++;
+    }
     return items;
 }
+vector<pair<double,pair<size_t,size_t>>> mergesort_ratio(vector<pair<double,pair<size_t,size_t>>> &items) {
+    
+    if (items.size() == 2)
+    {
+        if (items.back().first < items.front().first)
+        {
+            swap(items.front(), items.back());
+        }
+        return items;
+    }
+
+    size_t middle = items.size() / 2;
+
+    vector<pair<double,pair<size_t,size_t>>>::iterator middleIter(items.begin());
+    advance(middleIter, middle);
+
+    vector<pair<double,pair<size_t,size_t>>> first(items.begin(),middleIter);
+    vector<pair<double,pair<size_t,size_t>>> second(middleIter,items.end());
+
+    first = mergesort(first);
+    second = mergesort(second);
+
+    vector<pair<double,pair<size_t,size_t>>>::iterator fiter = first.begin();
+    vector<pair<double,pair<size_t,size_t>>>::iterator siter = second.begin();
+    items.clear();
+    
+    while ((fiter != first.end()) & (siter != second.end()))
+    {
+        if (fiter->first < siter->first)
+        {
+            items.push_back(*fiter);
+            fiter++;
+        }
+        else {
+            items.push_back(*siter);
+            siter++;
+        }
+    }
+    while (fiter != first.end())
+    {
+        items.push_back(*fiter);
+        fiter++;
+    }
+    while (siter != second.end())
+    {
+        items.push_back(*siter);
+        siter++;
+    }
+    return items;
+}
+
 
 class knapsack {
     size_t cap;
@@ -79,7 +126,9 @@ class knapsack {
                     };
 
 
-    double get_soln(bool dumb);
+    double ratio();
+
+    double greedy();
 };
 
 knapsack generate_knapsack(size_t size) {
