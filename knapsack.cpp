@@ -15,7 +15,7 @@ int main() {
     double dumbVal = k.greedy();
     double relativeVal = k.ratio();
     if (dumbVal < relativeVal)
-    {
+        {
         cout << "Ratios were the best method with a winning score of " << relativeVal;
         cout << " compared to the greedy method with " << dumbVal << endl;
     }
